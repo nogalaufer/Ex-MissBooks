@@ -1,0 +1,17 @@
+.app-header-container {
+	display: flex;
+	justify-content: space-evenly;
+
+}
+
+.app-nav {
+	display: flex;
+	gap: 1em
+}
+
+.app-nav>a {
+	display: inline-flex;
+	justify-self: end;
+	justify-content: space-around;
+
+}
