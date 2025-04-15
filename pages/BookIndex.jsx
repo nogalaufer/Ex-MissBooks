@@ -49,7 +49,8 @@ export function BookIndex() {
     }
 
     function getClearFilter(){
-        setFilterBy(bookService.getDefaultFilter())
+        const defaultFilter = bookService.getDefaultFilter()
+        setFilterBy(defaultFilter)
     }
 
 
@@ -68,12 +69,7 @@ export function BookIndex() {
             {selectedBook && <SelectedBook selectedBook={selectedBook} />}
     
         {books && <BookList books={books} onRemove={onRemove} onSelect={onSelect} />}
-
-
-
-
-
-
+        {/* {(!books.length === 0 || !books) <div> Loading....</div>}  */}
 
 
 

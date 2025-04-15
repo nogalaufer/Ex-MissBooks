@@ -1,5 +1,6 @@
 
 const { useState, useEffect } = React
+import { bookService } from "../services/book.service"
 
 export function BookFilter({ filterBy, onSetFilterBy ,getClearFilter}) {
     
@@ -30,12 +31,13 @@ export function BookFilter({ filterBy, onSetFilterBy ,getClearFilter}) {
     function onSubmitFilter(ev) {
         ev.preventDefault()
         onSetFilterBy(filterByToEdit)
+        
     }
 
-    function getClearFilter(ev){
+    function onClearFilter(ev){
         ev.preventDefault()
-        onSetFilterBy(null)
-        setFilterByToEdit(filterBy)
+        getClearFilter()
+        setFilterByToEdit(bookService.getDefaultFilter())
 
     }
     
@@ -44,10 +46,10 @@ export function BookFilter({ filterBy, onSetFilterBy ,getClearFilter}) {
     return (
         <section className="book-filter-continer">
             <form onSubmit={onSubmitFilter}>
-                <input onChange={handleChange} value={txt} name="txt" type="text" />
-                <input onChange={handleChange} value={minPrice || ''} name="minPrice" type="number" />
-                <input onChange={handleChange} checked={isOnSale || false} type="checkbox" name="isOnSale"  />
-                <button onClick={getClearFilter} >Clear</button>
+                <input onChange={handleChange} value={txt} name="txt" type="text" placeholder="Book name..."/>
+                <span> From <input onChange={handleChange} value={minPrice || ''} name="minPrice" type="number" placeholder="Price" /> €</span>
+                <span> Sale:<input onChange={handleChange} checked={isOnSale || false} type="checkbox" name="isOnSale"  /></span>
+                <button type="button" onClick={onClearFilter} >Clear</button>
 
                 <button>Submit</button>
             </form>

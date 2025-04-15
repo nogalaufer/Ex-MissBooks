@@ -1,21 +1,39 @@
 .app-header-container {
 	display: flex;
 	justify-content:space-between;
-	
+	align-items: center;
+	font-size: 2em;
+	background-color: rgba(7, 165, 197, 0.42);
 }
+
+.logo-header{
+	padding-left: 1em;
+
+
+}
+
 .app-header{
 	display: flex;
-	justify-items:space-between;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .app-nav {
 	display: flex;
+	justify-content: flex-end;
 	
 	gap: 1em
 }
 
 .app-nav>a {
 	display: flex;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
 
+}
+.app-nav a:last-child {
+padding-right: 1em;
 
 }
