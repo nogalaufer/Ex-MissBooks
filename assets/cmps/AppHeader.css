@@ -1,17 +1,21 @@
 .app-header-container {
 	display: flex;
-	justify-content: space-evenly;
-
+	justify-content:space-between;
+	
+}
+.app-header{
+	display: flex;
+	justify-items:space-between;
 }
 
 .app-nav {
 	display: flex;
+	
 	gap: 1em
 }
 
 .app-nav>a {
-	display: inline-flex;
-	justify-self: end;
-	justify-content: space-around;
+	display: flex;
+
 
 }

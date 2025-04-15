@@ -4,8 +4,8 @@ export function AppHeader({ onSetPage }) {
 
     return (
         <header className="app-header-container">
-            <section>
-                <h1>React Book App</h1>
+            <section className="app-header">
+                <h1>Books</h1>
                 <nav className="app-nav">
                     <a onClick={() => onSetPage('BookIndex')}>BookIndex</a>
                     <a onClick={() => onSetPage('HomePage')}>HomePage</a>

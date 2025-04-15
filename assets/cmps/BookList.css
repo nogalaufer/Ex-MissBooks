@@ -11,8 +11,11 @@ li {
     align-items: center;
     display: block;
     width: 400px;
-    height: 400px;
-    /* margin: 1em; */
+    height: 450px;
+    background-color: aqua;
+    border: 1px solid black;
+    border-radius: 2em;
+    margin: 1em;
 
 }
 

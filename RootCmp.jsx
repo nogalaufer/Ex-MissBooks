@@ -7,7 +7,7 @@ import { AppHeader } from "./cmps/AppHeader.jsx"
 
 export function RootCmp() {
 
-    const [page, setPage] = useState('BookIndex')
+    const [page, setPage] = useState('Books')
 
 
 
@@ -19,9 +19,9 @@ export function RootCmp() {
             <AppHeader onSetPage={(page) => setPage(page)} />
 
             <main className="main-nav">
-                {page === 'BookIndex' && <BookIndex/>}
-                {page === 'HomePage' && <HomePage/>}
-                {page === 'AboutUs' && <AboutUs/>}
+                {page === 'Books' && <BookIndex/>}
+                {page === 'Home' && <HomePage/>}
+                {page === 'About' && <AboutUs/>}
             </main>
         </section>
     )
