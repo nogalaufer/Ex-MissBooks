@@ -2,23 +2,25 @@ const { useState, useEffect } = React
 
 import { BookFilter } from '../cmps/BookFilter.jsx'
 import { BookList } from '../cmps/BookList.jsx'
-import { SelectedBook } from '../cmps/SelectedBook.jsx'
+import { BookDetails } from './BookDetails.jsx'
 import { bookService } from '../services/book.service.js'
+import { BookEdit } from './BookEdit.jsx'
 
 
 export function BookIndex() {
-    useEffect(() => {
-        loadBooks()
-    }, [])
-    // filterBy
-
-
-
     const [books, setBooks] = useState(null)
     const [filterBy, setFilterBy] = useState(bookService.getDefaultFilter())
     const [selectedBook, setSelectedBook] = useState(null)
+    const [isEdit, setIsEdit] = useState(false)
 
+    useEffect(() => {
+        console.log('loading books..');
+        loadBooks()
+    }, [filterBy])
 
+    useEffect(()=>{loadBooks},[isEdit])
+
+   
 
 
     function loadBooks() {
@@ -28,11 +30,11 @@ export function BookIndex() {
     }
 
     function onSelect(bookId) {
-        setSelectedBook(bookId)
-
-        //     bookService.get(bookId)
-        //         // .then(()=>{setSelectedBook()})
-        //     // openModal()
+        bookService.get(bookId)
+            .then(book => {
+                setSelectedBook(book)
+            })
+            .catch((err => console.log('Error fetching book:', err)))
 
     }
 
@@ -48,32 +50,55 @@ export function BookIndex() {
 
     }
 
-    function getClearFilter(){
+    function getClearFilter() {
         const defaultFilter = bookService.getDefaultFilter()
         setFilterBy(defaultFilter)
     }
 
 
     function onSetFilterBy(filterByToEdit) {
-        if(filterByToEdit===null){
-            getClearFilter()
-            loadBooks()
-        }
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterByToEdit }))
-        loadBooks()
     }
 
-    return (<React.Fragment>
-     
-            {<BookFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} getClearFilter={getClearFilter} />}
-            {selectedBook && <SelectedBook selectedBook={selectedBook} />}
-    
-        {books && <BookList books={books} onRemove={onRemove} onSelect={onSelect} />}
-        {/* {(!books.length === 0 || !books) <div> Loading....</div>}  */}
+
+    function onUpdate(bookToEdit) {
+        bookService.save(bookToEdit)
+        .then((savedBook) => {
+            setSelectedBook(savedBook)
+            setIsEdit(false)
+            setBooks(prevBooks => (
+                prevBooks.map(book => book.id === savedBook.id ? savedBook : book)
+            ))
+        })
+
+    }
+
+
+    return (<main>
+        {!selectedBook && (
+            <React.Fragment>
+                {<BookFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} getClearFilter={getClearFilter} />}
+                {books && <BookList books={books} onRemove={onRemove} onSelect={onSelect} />}
+            </React.Fragment>
+        )}
+
+        {selectedBook && (
+            <section>
+                {isEdit
+                    ? <BookEdit book={selectedBook} onUpdate={onUpdate} onCancelEdit={()=>setIsEdit(false)} />
+                    : <BookDetails
+                        book={selectedBook}
+                        onGoBack={() => setSelectedBook(null)}
+                        onGoEdit={() => setIsEdit(true)}
+                    />
+                }
+
+            </section>
+        )}
 
 
 
-    </React.Fragment>
+    </main>
     )
 
 }
