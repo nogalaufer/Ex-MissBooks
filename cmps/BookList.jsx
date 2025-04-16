@@ -3,12 +3,6 @@ const { Link } = ReactRouterDOM
 
 export function BookList({ books, onRemove, onSelect }) {
 
-
-
-
-
-
-
     return (
         <React.Fragment>
             <section className="add-book-btn">
@@ -20,7 +14,9 @@ export function BookList({ books, onRemove, onSelect }) {
                     <BookPreview book={book} index={index} />
                     <div className="preview-button-container">
                         <button onClick={() => onRemove(book.id)}>X</button>
-                        <button onClick={() => onSelect(book.id)}>Select</button>
+                        <button >
+                        <Link to={`/books/${book.id}`}>Select</Link>
+                        </button>
                     </div>
 
                 </li>

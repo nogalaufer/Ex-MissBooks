@@ -1,9 +1,18 @@
 
-const { useState } = React
+const { useState, useEffect } = React
+const { useParams, Link } = ReactRouterDOM
+import { bookService } from '../services/book.service.js'
 
-export function BookEdit({ book, onUpdate, onCancelEdit }) {
 
-    const [bookToEdit, setBookToEdit] = useState({ ...book })
+export function BookEdit({ onUpdate }) {
+    const { bookID } = useParams()
+    const [book, setBookToEdit] = useState(null)
+
+    useEffect(() => {
+        bookService.get(bookID)
+            .then(book => setBookToEdit(book))
+            .catch(err => console.error('Error fetching book:', err))
+    }, [])
 
     function handleChange({ target }) {
         let { value, name: field, type } = target
@@ -38,10 +47,10 @@ export function BookEdit({ book, onUpdate, onCancelEdit }) {
 
     function onSaveBook(ev) {
         ev.preventDefault()
-        onUpdate(bookToEdit)
+        onUpdate(book)
     }
 
-
+    if (!book) return <div>Loading...</div>
     return (
         <section className='book-edit'>
             <h2 className='edit-book-header'>Edit Book</h2>
@@ -52,7 +61,7 @@ export function BookEdit({ book, onUpdate, onCancelEdit }) {
                         type='text'
                         placeholder='Enter New Title'
                         name='title'
-                        value={bookToEdit.title}
+                        value={book.title}
                         onChange={handleChange}
                     />
                 </div>
@@ -64,20 +73,20 @@ export function BookEdit({ book, onUpdate, onCancelEdit }) {
                         placeholder='Set Price'
                         name='amount'
                         onChange={handleListPriceChange}
-                        value={bookToEdit.listPrice.amount}
+                        value={book.listPrice.amount}
                     />
                 </div>
 
                 <div className='book-edit-actions-container'>
                     <button className='save-edit-btn' >
-                        Save ✔
+                        Save
                     </button>
                     <button
                         type='button'
                         className='cancel-edit-btn'
-                        onClick={onCancelEdit}
+
                     >
-                        Cancel ✖
+                        <Link to={`/books/${bookID}`}>Cancel</Link>
                     </button>
                 </div>
 

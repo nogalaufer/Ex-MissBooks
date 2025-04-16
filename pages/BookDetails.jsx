@@ -1,9 +1,21 @@
-const { useEffect } = React
+const { useEffect, useState } = React
+const { useParams, Link } = ReactRouterDOM
 
+import { bookService } from '../services/book.service.js'
 import { LongTxt } from "../cmps/LongTxt.jsx"
-const { Link } = ReactRouterDOM
 
-export function BookDetails({ book,onGoBack,onGoEdit }) {
+export function BookDetails() {
+    const { bookID } = useParams()
+    const [book, setBook] = useState(null)
+
+    useEffect(() => {
+        bookService.get(bookID)
+            .then(book => setBook(book))
+            .catch(err => console.error('Error fetching book:', err))
+    }, [])
+
+
+
 
     function getBookLng(lng) {
         const bookLang = {
@@ -37,6 +49,7 @@ export function BookDetails({ book,onGoBack,onGoEdit }) {
     }
 
 
+    if (!book) return <div>Loading...</div>
     const {
         id,
         title,
@@ -50,83 +63,84 @@ export function BookDetails({ book,onGoBack,onGoEdit }) {
     } = book
     return (
         <React.Fragment>
-          <section>
-            <div className="book-details-container">
-              {/* <button>X</button> */}
-              <h3>{title},</h3>
-              <h1>{authors.join(', ')}</h1>
-              {listPrice.isOnSale && (
-                <div className="book-details-on-sale">On-sale!</div>
-              )}
-              <img src={thumbnail} alt="Book thumbnail" />
-            </div>
-    
-            <div className="book-details-info">
-              <div className="book-details-info-row">
-                <span className="book-details-info-title">Year publish:</span>
-                <span className="book-details-info-text">{getPublishDate()}</span>
-              </div>
-    
-              <div className="book-details-info-row">
-                <span className="book-details-info-title">
-                  Author{authors.length > 1 ? 's' : ''}:
-                </span>
-                <span className="book-details-info-text">
-                  {authors.join(', ')}
-                </span>
-              </div>
-    
-              <div className="book-details-info-row">
-                <span className="book-details-info-title">Language:</span>
-                <span className="book-details-info-text">
-                  {getBookLng(language)}
-                </span>
-              </div>
-    
-              <div className="book-details-info-row">
-                <span className="book-details-info-title">Categories:</span>
-                <span className="book-details-info-text">
-                  {categories.join(', ')}
-                </span>
-              </div>
-    
-              <div className="book-details-info-row">
-                <span className="book-details-info-title">Pages:</span>
-                <span className="book-details-info-text">{getPageCount()}</span>
-              </div>
-    
-              <div className="book-details-info-row">
-                <span className="book-details-info-title">Price:</span>
-                <span className={'book-details-info-text ' + getPriceClass()}>
-                  {listPrice.amount} {listPrice.currencyCode}
-                </span>
-              </div>
-    
-              <div className="book-details-buy-container">
-                {listPrice.isOnSale && (
-                  <button
-                    className="buy-book-btn"
-                    onClick={() => alert(`HA! ma ze po hanut?`)}
-                  >
-                    Buy it now!
-                  </button>
-                )}
-                <div className="actions-btns">
-                  <button className="go-back-btn" onClick={onGoBack}>
-                  <Link to={`/books`}>Back</Link>
-                  </button>
-                  <button className="go-edit-btn" onClick={onGoEdit}>
-                    <Link to={`/books/edit/${id}`}>Edit</Link>
-                  </button>
+            <section>
+                <div className="book-details-container">
+                    {/* <button>X</button> */}
+                    <h3>{title},</h3>
+                    <h1>{authors.join(', ')}</h1>
+                    {listPrice.isOnSale && (
+                        <div className="book-details-on-sale">On-sale!</div>
+                    )}
+                    <img src={thumbnail} alt="Book thumbnail" />
                 </div>
-              </div>
-            </div>
-    
-            <div className="book-details-info-row">
-              <span className="book-details-info-title">Description:</span>
-              <LongTxt txt={description} />
-            </div>
-          </section>
+
+                <div className="book-details-info">
+                    <div className="book-details-info-row">
+                        <span className="book-details-info-title">Year publish:</span>
+                        <span className="book-details-info-text">{getPublishDate()}</span>
+                    </div>
+
+                    <div className="book-details-info-row">
+                        <span className="book-details-info-title">
+                            Author{authors.length > 1 ? 's' : ''}:
+                        </span>
+                        <span className="book-details-info-text">
+                            {authors.join(', ')}
+                        </span>
+                    </div>
+
+                    <div className="book-details-info-row">
+                        <span className="book-details-info-title">Language:</span>
+                        <span className="book-details-info-text">
+                            {getBookLng(language)}
+                        </span>
+                    </div>
+
+                    <div className="book-details-info-row">
+                        <span className="book-details-info-title">Categories:</span>
+                        <span className="book-details-info-text">
+                            {categories.join(', ')}
+                        </span>
+                    </div>
+
+                    <div className="book-details-info-row">
+                        <span className="book-details-info-title">Pages:</span>
+                        <span className="book-details-info-text">{getPageCount()}</span>
+                    </div>
+
+                    <div className="book-details-info-row">
+                        <span className="book-details-info-title">Price:</span>
+                        <span className={'book-details-info-text ' + getPriceClass()}>
+                            {listPrice.amount} {listPrice.currencyCode}
+                        </span>
+                    </div>
+
+                    <div className="book-details-buy-container">
+                        {listPrice.isOnSale && (
+                            <button
+                                className="buy-book-btn"
+                                onClick={() => alert(`HA! ma ze po hanut?`)}
+                            >
+                                Buy it now!
+                            </button>
+                        )}
+                        <div className="actions-btns">
+                            <button className="go-back-btn" >
+                                <Link to={`/books`}>Back</Link>
+                            </button>
+                            <button className="go-edit-btn">
+                                <Link to={`/books/edit/${bookID}`}>Edit</Link>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div className="book-details-info-row">
+                    <span className="book-details-info-title">Description:</span>
+                    <LongTxt txt={description} />
+                </div>
+            </section>
         </React.Fragment>
-      );
-    }
+    );
+}

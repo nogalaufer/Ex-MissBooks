@@ -1,5 +1,7 @@
 const { useState, useEffect } = React
 
+// const {useNavigate} = ReactRouterDOM
+
 import { BookFilter } from '../cmps/BookFilter.jsx'
 import { BookList } from '../cmps/BookList.jsx'
 import { BookDetails } from './BookDetails.jsx'
@@ -18,9 +20,14 @@ export function BookIndex() {
         loadBooks()
     }, [filterBy])
 
-    useEffect(()=>{loadBooks},[isEdit])
+    useEffect(() => { loadBooks }
+        , [isEdit])
+    // const navigate = useNavigate()
+    useEffect(() => {
+        console.log("selectedBook:", selectedBook);
+    }, [selectedBook]);
 
-   
+
 
 
     function loadBooks() {
@@ -29,17 +36,21 @@ export function BookIndex() {
             .catch(err => console.log('err:', err))
     }
 
-    function onSelect(bookId) {
-        bookService.get(bookId)
-            .then(book => {
-                setSelectedBook(book)
-            })
-            .catch((err => console.log('Error fetching book:', err)))
+    function onSelect(select) {
+        console.log(select)
+        if (select !== null){
+            bookService.get(select)
+                .then(book => {
+                    setSelectedBook(book)
+                })
+                .catch((err => console.log('Error fetching book:', err)))
+
+        }
+
 
     }
 
     function onRemove(bookId) {
-        console.log(bookId)
         bookService.remove(bookId)
             .then(() => {
                 setBooks((prevBooks) => prevBooks.filter(book => book.id !== bookId))
@@ -63,13 +74,13 @@ export function BookIndex() {
 
     function onUpdate(bookToEdit) {
         bookService.save(bookToEdit)
-        .then((savedBook) => {
-            setSelectedBook(savedBook)
-            setIsEdit(false)
-            setBooks(prevBooks => (
-                prevBooks.map(book => book.id === savedBook.id ? savedBook : book)
-            ))
-        })
+            .then((savedBook) => {
+                setSelectedBook(savedBook)
+                setIsEdit(false)
+                setBooks(prevBooks => (
+                    prevBooks.map(book => book.id === savedBook.id ? savedBook : book)
+                ))
+            })
 
     }
 
@@ -81,21 +92,6 @@ export function BookIndex() {
                 {books && <BookList books={books} onRemove={onRemove} onSelect={onSelect} />}
             </React.Fragment>
         )}
-
-        {selectedBook && (
-            <section>
-                {isEdit
-                    ? <BookEdit book={selectedBook} onUpdate={onUpdate} onCancelEdit={()=>setIsEdit(false)} />
-                    : <BookDetails
-                        book={selectedBook}
-                        onGoBack={() => setSelectedBook(null)}
-                        onGoEdit={() => setIsEdit(true)}
-                    />
-                }
-
-            </section>
-        )}
-
 
 
     </main>
