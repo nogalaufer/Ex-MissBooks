@@ -1,5 +1,9 @@
 .selected-book-modal{
-    
-    background-color: aquamarine;
-    position:fixed;
+    /* background-color: aquamarine; */
+    /* position:fixed; */
+    place-items: center;
+
+   img{
+        place-self: center;
+    }
 }

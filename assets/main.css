@@ -5,3 +5,5 @@
 @import './cmps/AppHeader.css';
 @import './cmps/BookFilter.css';
 @import './cmps/BookPreview.css';
+
+@import './pages/BookDetails.css';

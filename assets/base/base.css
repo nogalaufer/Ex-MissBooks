@@ -16,7 +16,7 @@ body {
 	margin: 0;
 	padding: 0;
 	color: var(--gray3);
-	/* text-align: center; */
+	text-align: center;
 
 }
 
@@ -60,4 +60,9 @@ object {
 
 
 
+.loading{
 
+	color: rgba(94, 94, 156, 0.397);
+	transition: 2s;
+	font-size: 4em;
+}

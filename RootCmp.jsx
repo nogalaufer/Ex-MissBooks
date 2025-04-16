@@ -23,10 +23,11 @@ export function RootCmp() {
 
                 <main className="main-nav">
                     <Routes>
-                        <Route path="/" element={<Navigate to="/home"/>}/>
+                        <Route path="/" element={<Navigate to="/books"/>}/>
                         <Route path="/home" element={<HomePage />}/>
                         <Route path="/about" element={<AboutUs />}/>
                         <Route path="/books" element={<BookIndex />}/>
+                        <Route path="/books/edit" element={<BookEdit />}/>
                         <Route path="/books/:bookID" element={<BookDetails />}/>
                         <Route path="/books/edit/:bookID" element={<BookEdit />}/>
                    

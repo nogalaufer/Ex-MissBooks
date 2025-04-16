@@ -16,7 +16,6 @@ export function BookDetails() {
 
 
 
-
     function getBookLng(lng) {
         const bookLang = {
             he: 'Hebrew',
@@ -49,7 +48,10 @@ export function BookDetails() {
     }
 
 
-    if (!book) return <div>Loading...</div>
+
+
+
+    if (!book) return <div className="loading">Loading...</div>
     const {
         id,
         title,
@@ -63,9 +65,8 @@ export function BookDetails() {
     } = book
     return (
         <React.Fragment>
-            <section>
+            <section className="selected-book-modal">
                 <div className="book-details-container">
-                    {/* <button>X</button> */}
                     <h3>{title},</h3>
                     <h1>{authors.join(', ')}</h1>
                     {listPrice.isOnSale && (

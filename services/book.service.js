@@ -52,8 +52,21 @@ function save(car) {
     }
 }
 
-function getEmptyBook(vendor = '', speed = '') {
-    return { vendor, speed }
+function getEmptyBook(title = '', amount = '', description = '', pageCount = '', language = 'en', authors = '') {
+    return {
+        title,
+        authors,
+        description,
+        pageCount,
+        thumbnail: `/assets/booksImages/15.jpg`,
+        language,
+        listPrice: {
+            amount,
+            currencyCode: "EUR",
+            isOnSale: Math.random() > 0.7
+        },
+        reviews: []
+    }
 }
 
 function getDefaultFilter() {
